@@ -9,19 +9,22 @@
 
     <body>
         <body>
-            <h1>
-              THE TITLE OF YOUR WEBPAGE
-            </h1>
-            
+            <h1>ROCK PAPER SCISSORS</h1>
+            <div id="instructions"></div>
+            <br>
+            <br>
             <button type=button data-move="rock" onclick="getPlay(this)">rock</button>
-            
-             <button type=button data-move="paper" onclick="getPlay(this)">paper</button>
-            
+            <button type=button data-move="paper" onclick="getPlay(this)">paper</button>
             <button type=button data-move="scissors" onclick="getPlay(this)">scissors</button>
+            <br>
+            <br>
+            <p id="computerInput">Computer Move:</p> 
+            <p id="playerInput">Player Move:</p>
+            <div id="container"></div> 
+            <p id="scores">Score:</p>  
             
-           <button type=button onclick="playRound()">Play</button>  
-           <div id="container"></div>
-          </body>
+          
+        </body>
         
     </body>
 </html>
