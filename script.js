@@ -1,57 +1,101 @@
-function computerPlay() {
+
+//DOM elements
+const instruction = document.createElement('div');
+instruction.classList.add('instruction');  //not actully needed ... not using class
+instruction.textContent = "Please make a selection";
+instructions.appendChild(instruction);
+
+const ps = document.createElement('div');
+ps.textContent = "Player:";
+scores.appendChild(ps);
+
+const cs = document.createElement('div');
+cs.textContent = "Computer:";
+scores.appendChild(cs);
+
+const space = document.createElement('br');
+scores.appendChild(space);
+
+const result = document.createElement('div');
+result.classList.add('result');  
+result.textContent = "Results: (waiting for input) ";
+scores.appendChild(result);
+
+const space2= document.createElement('br');
+scores.appendChild(space2);
+
+const bestOf = document.createElement('div');
+bestOf.classList.add('bestOf');
+bestOf.textContent = "";
+scores.appendChild(bestOf);
+
+const playerText = "playerInput";
+const computerText = "computerInput"
+
+let computerMove;
+let playerMove;
+let round = 1;
+let computer = 0;
+let player = 0;
+
+function computerSelect() {
     let plays = ["rock", "paper", "scissors"];
-    return plays[Math.floor(Math.random() * plays.length)];
+    computerMove = plays[Math.floor(Math.random() * plays.length)];
+    document.getElementById(computerText).innerHTML =`Computer Move: ${computerMove}`;
+    return computerMove;
 }
 
-//counter variables for scores
-let player = 0
-let computer = 0
-
-// starts round 
-function playRound(playerSelection, computerSelection) {
-    if ((playerSelection == "rock" && computerSelection == "scissors")
-    || (playerSelection == "paper" && computerSelection == "rock")
-    || (playerSelection == "scissors" && computerSelection == "paper"))
+function playGame(player1, player2) {
+    if ((player1 == "rock" && player2 == "scissors")
+    || (player1 == "paper" && player2 == "rock")
+    || (player1 == "scissors" && player2 == "paper"))
     { 
-        player++; //add to player score
-        return `You win! ${playerSelection} beats ${computerSelection}`;
-    } else if ((playerSelection == "rock" && computerSelection == "paper")
-    || (playerSelection == "paper" && computerSelection == "scissors")
-    || (playerSelection == "scissors" && computerSelection == "rock"))
+        player++;
+        round++ //add to player score
+        result.textContent =  `Results: You win! ${player1} beats ${player2}`;
+        ps.textContent = `Player: ${player}`;
+        cs.textContent = `Computer: ${computer}`;
+    } else if ((player1 == "rock" && player2 == "paper")
+    || (player1 == "paper" && player2 == "scissors")
+    || (player1 == "scissors" && player2 == "rock"))
     {
-        computer++; //add to computer score
-        return `You Lose! ${computerSelection} beats ${playerSelection}`;
+        computer++;
+        round++ //add to computer score
+        ps.textContent = `Player: ${player}`;
+        cs.textContent = `Computer: ${computer}`;
+        result.textContent =  `Results: You Lose! ${computerMove} beats ${playerMove}`;
+        
     } else {
-        return "It's a tie!";
+        result.textContent = "Results: It's a tie!";
+        ps.textContent = `Player: ${player}`;
+        cs.textContent = `Computer: ${computer}`;
     }
-    
+    best();
 }
-    
-function game() {
-    computerSelection = computerPlay(); //computer selects move
-    playerSelection = prompt("rock paper scissors"); //prompt player selection
-    playerSelection = playerSelection.toLowerCase(); 
-    //(verifies if player entered proper input)
-    while ((playerSelection != "rock") && (playerSelection != "paper") && (playerSelection != "scissors")) {
-        playerSelection = prompt(playerSelection + " is not valid. Please pick: rock or paper or scissors");
-        playerSelection = playerSelection.toLowerCase()
-        }
 
-    //log winner of round    
-    console.log(`Your play: ${playerSelection}`); //print player move
-    console.log(`Computer play: ${computerSelection}`); //print computer move
-    console.log(playRound(playerSelection, computerSelection));
-    console.log(`Your score: ${player}`); //print players score
-    console.log(`Computer score: ${computer}`); //print computer score
-
-    //log final score
-    if (player > computer) { // at the end the of 5 rounds if player has a higher score
-        console.log("you win!");
-    } else if (computer >player){ //otherwise if computer has higher score
-        console.log("you lose");
-    } else { // or if its a tie
-        console.log("its a tie");
+function best() {
+    if(player == 3) {
+        bestOf.textContent = `you win best of 5 rounds!`;
+        instruction.textContent = "TRY AGAIN!";
+        player = 0;
+        computer = 0;
+        round = 0
+        
+    } else if(computer >= 3) {
+        bestOf.textContent = `computer wins best of 5`;
+        instruction.textContent = "TRY AGAIN!";
+        player = 0;
+        computer = 0;
+        round = 0;
     }
 }
 
-game();
+function getPlay(button){
+    bestOf.textContent = ``
+    playerMove=button.getAttribute("data-move");
+    document.getElementById(playerText).innerHTML =`Player Move: ${playerMove}`;
+    instruction.textContent = "Now make another selection";
+    computerSelect();
+    playGame(playerMove, computerMove);
+    console.log(player, computer);
+  }
